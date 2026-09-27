@@ -1,6 +1,7 @@
 {
   "name": "switchboard",
   "version": "1.0.0",
+  
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,12 +12,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@ai-sdk/google": "^4.0.82",
+    "@ai-sdk/openai": "^4.0.78",
     "@clack/prompts": "^1.8.1",
+    "ai": "^7.0.118",
     "chalk": "^6.0.0",
     "commander": "^15.0.0",
-    "figlet": "^1.11.4"
+    "dotenv": "^18.0.4",
+    "figlet": "^1.11.4",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",
