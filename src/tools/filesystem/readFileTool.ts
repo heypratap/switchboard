@@ -1,5 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
+import { resolveProjectPath } from "../../core/security/path.js";
 import { readFile } from "../../filesystem/readFile.js";
 
 export const readFileTool = tool({
@@ -12,6 +13,8 @@ export const readFileTool = tool({
   }),
 
   execute: async ({ filePath }) => {
-    return await readFile(filePath);
-  },
+  const safePath = resolveProjectPath(filePath);
+
+  return await readFile(safePath);
+},
 });

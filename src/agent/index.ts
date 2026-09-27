@@ -1,5 +1,7 @@
 import { text } from "@clack/prompts";
 import { runAgent } from "../ai/agent.js";
+import { approveActions } from "../core/actions/approval.js";
+import { actionTracker } from "../tools/filesystem/writeFileTool.js";
 
 export async function startAgent() {
   while (true) {
@@ -18,9 +20,16 @@ export async function startAgent() {
 
     try {
       const response = await runAgent(prompt);
-
       console.log("\nSwitchboard:\n");
-      console.log(response);
+console.log(response);
+
+const actions = actionTracker.getActions();
+
+await approveActions(actions);
+
+actionTracker.clear();
+
+console.log();
       console.log();
     } catch (error) {
       console.log("\nSwitchboard:\n");
