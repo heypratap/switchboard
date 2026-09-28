@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { createTwoFilesPatch } from "diff";
 
 import type { FileWriteAction } from "./types.js";
 
@@ -15,14 +16,12 @@ export async function createDiff(action: FileWriteAction) {
     return "No changes.";
   }
 
-  return [
-    `--- ${action.filePath}`,
-    "+++ proposed",
-    "",
-    "Current:",
-    existingContent || "(file does not exist)",
-    "",
-    "Proposed:",
+  return createTwoFilesPatch(
+    action.filePath,
+    action.filePath,
+    existingContent,
     action.content,
-  ].join("\n");
+    "Current",
+    "Proposed",
+  );
 }

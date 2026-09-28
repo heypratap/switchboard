@@ -3,6 +3,7 @@ import { runAgent } from "../ai/agent.js";
 import { approveActions } from "../core/actions/approval.js";
 import { actionTracker } from "../tools/filesystem/writeFileTool.js";
 
+
 export async function startAgent() {
   while (true) {
     const prompt = await text({

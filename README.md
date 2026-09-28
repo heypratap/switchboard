@@ -1,207 +1,133 @@
-# Switchboard
+SWITCHBOARD
 
-> A TypeScript-based AI coding agent that helps you understand, plan, and modify software projects directly from the terminal.
+Switchboard is a terminal-based AI coding agent built with Node.js, TypeScript, and the Vercel AI SDK.
 
-Switchboard is an AI-powered CLI developer assistant currently being built from the ground up with Node.js and TypeScript.
+It can inspect a project, understand its codebase, plan changes, modify files through controlled tools, execute approved shell commands, and show proposed file changes before applying them.
 
-The goal is to create a developer tool that can understand a codebase, reason about changes, use development tools, and safely apply modifications with user approval.
+The project was built from scratch to understand how AI coding agents work internally rather than treating the LLM as a black box.
 
-## 🚧 Project Status
 
-**Early development**
+FEATURES-
 
-The CLI foundation is currently implemented. Agent, Plan, and Ask modes are being built incrementally.
+< Agent Mode >
+Agent mode allows Switchboard to work on a project using AI-powered tool calling.
+It can-
+Inspect project files
+Read source files
+Search the codebase
+Create files
+Edit existing files
+Execute approved shell commands
+Stage file changes
+Show a diff
+Ask for approval before applying changes
 
-## ✨ Planned Capabilities
+< Plan Mode >
+Plan mode is read-only.
+It can inspect the project and produce an implementation plan without modifying files.
 
-### Agent
+< Ask Mode >
+Ask mode provides read-only questions and answers about the current project.
+It can inspect:
+Project structure
+Source files
+Existing implementation
+Code relationships
 
-Use AI to work directly with a codebase.
+< Safety >
+Switchboard does not allow the AI to directly modify files
+The modification flow is:
 
-* Read files
-* Create files
-* Modify files
-* Delete files
-* Search the codebase
-* Execute approved shell commands
-* Track proposed changes
-* Review diffs
-* Approve or reject changes
+AI
+ ↓
+Tool Call
+ ↓
+Action Tracker
+ ↓
+Diff
+ ↓
+User Approval
+ ↓
+Executor
+ ↓
+Project File
 
-### Plan
+Shell commands also pass through a command validation layer and require user approval before execution.
+File paths are resolved against the project root to prevent access outside the project.
 
-Turn a high-level development request into an actionable implementation plan.
 
-```text
-User request
-     ↓
-Project analysis
-     ↓
-Research
-     ↓
-Implementation plan
-     ↓
-User selects steps
-     ↓
-Execution
-```
+TECH STACK-
 
-### Ask
+Node.js
+TypeScript
+Vercel AI SDK
+Google Gemini
+Zod
+@clack/prompts
+Chalk
+Vitest
+diff
 
-Understand an existing codebase without modifying it.
 
-Examples:
+GETTING STARTED-
 
-```text
-Why is this component re-rendering?
-
-Where is authentication handled?
-
-How does data flow through this application?
-
-Why is this API request failing?
-```
-
-## 🏗️ Architecture
-
-The project is being designed around a modular architecture:
-
-```text
-                    Switchboard
-                         │
-                      CLI
-                         │
-          ┌──────────────┼──────────────┐
-          │              │              │
-        Agent           Plan           Ask
-          │              │              │
-          └──────────────┼──────────────┘
-                         │
-                      AI Model
-                         │
-                    Tool Calling
-                         │
-          ┌──────────────┼──────────────┐
-          │              │              │
-      File Tools      Search        Shell
-          │              │              │
-          └──────────────┼──────────────┘
-                         │
-                  Action Tracker
-                         │
-                  Diff / Approval
-                         │
-                    File System
-```
-
-## 🛠️ Tech Stack
-
-* Node.js
-* TypeScript
-* Commander
-* Clack
-* Chalk
-* Figlet
-* Vercel AI SDK
-* Zod
-* OpenRouter
-* Firecrawl
-
-Additional technologies will be introduced as the project evolves.
-
-## 📁 Current Structure
-
-```text
-src/
-├── index.ts
-├── cli.ts
-│
-├── agent/
-│   └── index.ts
-│
-├── plan/
-│   └── index.ts
-│
-└── ask/
-    └── index.ts
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-* Node.js
-* npm
-* Git
-
-### Installation
-
-Clone the repository:
-
-```bash
+1. Clone the repository
 git clone <your-repository-url>
 cd switchboard
-```
-
-Install dependencies:
-
-```bash
+2. Install dependencies
 npm install
-```
+3. Configure Gemini
+Create a .env file:
+GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
+The .env file should never be committed.
+4. Development mode
+npm run dev
+5. Production build
+npm run build
+6. Run the compiled application
+npm start
 
-Run the CLI:
 
-```bash
-npx tsx src/index.ts
-```
+MODES-
 
-Type-check the project:
+< Agent >
+Use Agent mode when you want Switchboard to actually work on your project.
+Example:
+Create a reusable Button component in React and add it to the project.
+Switchboard can inspect the project, propose changes, show the diff, and ask for approval before applying them.
 
-```bash
-npx tsc --noEmit
-```
+< Plan >
+Use Plan mode when you want to understand how a feature should be implemented before making changes.
+Example:
+How should I add authentication to this project?
+Plan mode only has access to read-only project inspection tools.
 
-## 🧪 Current CLI
+< Ask >
+Use Ask mode when you want to understand existing code.
+Example:
+How does the AI tool-calling flow work?
+Ask mode is read-only.
 
-The current CLI provides three development modes:
 
-```text
-Agent
-Plan
-Ask
-Exit
-```
+AI PROVIDER-
+Switchboard currently uses Google Gemini through @ai-sdk/google.
+The application requires a valid Gemini API key and is subject to the availability and quota limits of the selected Gemini model/provider.
 
-The modes are currently being implemented incrementally.
 
-## 🗺️ Roadmap
+LEARNING GOALS-
+Switchboard was built to explore the architecture behind modern AI coding agents, including-
+LLM tool calling
+Agent loops
+Project context
+Filesystem tools
+Shell tools
+Action staging
+Approval workflows
+Diff generation
+Security boundaries
+CLI architecture
+AI SDK integration
 
-* [x] Node.js + TypeScript setup
-* [x] CLI foundation
-* [x] Interactive main menu
-* [x] Agent / Plan / Ask module structure
-* [ ] Project context detection
-* [ ] File system tools
-* [ ] Code search
-* [ ] Shell execution tool
-* [ ] AI model integration
-* [ ] AI tool calling
-* [ ] Agent mode
-* [ ] Action tracking
-* [ ] Diff viewer
-* [ ] Approval system
-* [ ] Plan mode
-* [ ] Ask mode
-* [ ] Security and permission controls
-* [ ] CLI packaging
-* [ ] Documentation and examples
 
-## 🎯 Project Goal
-
-Switchboard is being built as a practical exploration of how AI coding agents work internally.
-
-The project focuses on understanding the systems behind an AI developer tool rather than simply wrapping an LLM in a chat interface.
-
-## 📄 License
-
-License will be added as the project approaches its first stable release.
+LICENSE-
+MIT

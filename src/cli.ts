@@ -1,9 +1,29 @@
-import { intro, outro, select } from "@clack/prompts";
+
 import { startAgent } from "./agent/index.js";
 import { startPlan } from "./plan/index.js";
 import { startAsk } from "./ask/index.js";
-
+import { outro, select } from "@clack/prompts";
+import chalk from "chalk";
+import figlet from "figlet";
 type Mode = "agent" | "plan" | "ask" | "exit";
+
+function showBanner() {
+  console.log(
+    chalk.gray(
+      figlet.textSync("SWITCHBOARD", {
+        font: "ANSI Shadow",
+        horizontalLayout: "default",
+        verticalLayout: "default",
+      }),
+    ),
+  );
+
+  console.log(
+    chalk.dim("AI Coding Agent CLI"),
+  );
+
+  console.log();
+}
 
 async function showMainMenu(): Promise<Mode> {
   const mode = await select({
@@ -35,7 +55,7 @@ async function showMainMenu(): Promise<Mode> {
 }
 
 export async function startCLI() {
-  intro("SWITCHBOARD");
+  showBanner();
 
   while (true) {
     const mode = await showMainMenu();

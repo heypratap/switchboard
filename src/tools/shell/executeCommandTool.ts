@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-
+import { validateCommand } from "../../core/security/command.js";
 import { confirm } from "@clack/prompts";
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import { getProjectRoot } from "../../core/project/context.js";
 
 const execAsync = promisify(exec);
+
 
 export const executeCommandTool = tool({
   description:
@@ -18,12 +19,21 @@ export const executeCommandTool = tool({
       .string()
       .describe("The shell command to execute."),
   }),
+  
 
   execute: async ({ command }) => {
     const approved = await confirm({
       message: `Run command: ${command}?`,
     });
+const validation = validateCommand(command);
 
+if (!validation.allowed) {
+  return {
+    success: false,
+    rejected: true,
+    message: validation.reason,
+  };
+}
     if (approved !== true) {
       return {
         success: false,
