@@ -3,7 +3,7 @@ import { listFiles } from "./listFiles.js";
 
 export async function searchFiles(
   directory: string,
-  query: string
+  query: string,
 ): Promise<string[]> {
   const files = await listFiles(directory);
   const matches: string[] = [];
@@ -15,9 +15,7 @@ export async function searchFiles(
       if (content.includes(query)) {
         matches.push(file);
       }
-    } catch {
-      // Ignore files that cannot be read as text
-    }
+    } catch {}
   }
 
   return matches;

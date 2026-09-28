@@ -8,9 +8,7 @@ export async function createDiff(action: FileWriteAction) {
 
   try {
     existingContent = await readFile(action.filePath, "utf-8");
-  } catch {
-    // File does not exist yet.
-  }
+  } catch {}
 
   if (existingContent === action.content) {
     return "No changes.";
